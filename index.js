@@ -4,7 +4,7 @@ const { token } = require('./config.json');
 const prefix = "$";
 var unitauth = ['239986007313743873', '254216945375772673', '480792708462673920', '616316541499342848', '291933059576627200', '660046048667893760', '182162812276047874'];
 var genauth = ['551491388999729202', '254216945375772673', '616316541499342848', '182162812276047874'];
-var mcauth = ['701517292990627881', '254216945375772673'];
+var mcauth = ['701517292990627881', '254216945375772673', '182162812276047874'];
 const airole = "931138758718394408";
 const munchrole = "966124012394655815";
 var bannednums = [88];
@@ -40,10 +40,10 @@ client.on("messageCreate", async (msg) => {
                 msg.reply("Hey " + msg.author.username);
                 break;
 
-            case "sexme":
-                msg.reply("<@551491388999729202> has sexed " + msg.author.username); 
-                msg.member.roles.add(msg.guild.roles.cache.find(role => role.id == '898537395631292436'));
-                break;
+            // case "sexme":
+            //     msg.reply("<@551491388999729202> has sexed " + msg.author.username); 
+            //     msg.member.roles.add(msg.guild.roles.cache.find(role => role.id == '898537395631292436'));
+            //     break;
 
             case "unitify":
                 try {
@@ -92,7 +92,6 @@ client.on("messageCreate", async (msg) => {
                     msg.reply("There was some sort of error. God damnit.");
                     break;
                 }
-
 			case "deunitify":
 				if (unitauth.includes(msg.author.id)) {
 					
@@ -109,13 +108,12 @@ client.on("messageCreate", async (msg) => {
 							
 						}
 					} catch (err) {
-						console.log(err);HOLY 
+						console.log(err); 
 					}
 
 
-				}
 				break;
-			
+						
 			case "munchify":
 				try {
 					const member = msg.mentions.members.first();
@@ -130,8 +128,7 @@ client.on("messageCreate", async (msg) => {
 				} catch (err) {
 					msg.reply("There was some sort of error. God damnit.");
 					break;
-				}
-			
+				}		
 			case "demunchify":
 				try {
 					const member = msg.mentions.members.first();
@@ -147,7 +144,6 @@ client.on("messageCreate", async (msg) => {
 					msg.reply("There was some sort of error. God damnit.");
 					break;
 				}
-
             case "say":
                 if (genauth.includes(msg.author.id)) {
                     if (content.length > 1) {
@@ -225,7 +221,6 @@ client.on("messageCreate", async (msg) => {
                 }
                 break;
 
-
             case "emojilist":
                 var emojis = msg.guild.emojis.cache.map(m => {
                     if (m.animated) {
@@ -259,7 +254,7 @@ client.on("messageCreate", async (msg) => {
                 break;
 
             case "legionmention":
-                if (msg.author.id === "254216945375772673") {
+                if (msg.author.id === "254216945375772673" || msg.author.id === "182162812276047874") {
                     let lgrole = msg.guild.roles.cache.find(role => role.id == airole);
                     await lgrole.edit({mentionable: true});
                     await msg.channel.send("<@&" + airole + "> " + content.slice(1).join(" "));
@@ -276,13 +271,6 @@ client.on("messageCreate", async (msg) => {
                 if (genauth.includes(msg.author.id)) {
                     msg.reply("alright <@" + msg.author.id + ">. bye bye");
                     throw "Bot Died. - " + msg.author.username;
-                }
-                break;
-
-            case "gogogo":
-                if (genauth.includes(msg.author.id)) {
-                    let lerole = msg.guild.roles.cache.find(role => role.id == '961520843509358633');
-                    await lerole.setPermissions([Permissions.DEFAULT]);
                 }
                 break;
 
