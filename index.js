@@ -26,7 +26,7 @@ client.on("messageCreate", async (msg) => {
         
     }
     if (msg.content === "!rank") {
-        msg.reply("Low Rank XD");
+        msg.reply("low rank xd");
     }
 
     const content = msg.content.slice(1).split(" ");
@@ -40,6 +40,10 @@ client.on("messageCreate", async (msg) => {
                 msg.reply("Hey " + msg.author.username);
                 break;
 
+            case "playlist":
+                msg.reply("The Bean Zone Lore playlist, curated by AmbyNavy: https://www.youtube.com/playlist?list=PLfRqRuxX3UFXGyZpj8NHOHm7C1EokiI0A");
+                break;
+            
             // case "sexme":
             //     msg.reply("<@551491388999729202> has sexed " + msg.author.username); 
             //     msg.member.roles.add(msg.guild.roles.cache.find(role => role.id == '898537395631292436'));
@@ -111,7 +115,7 @@ client.on("messageCreate", async (msg) => {
 						console.log(err); 
 					}
 
-
+                }
 				break;
 						
 			case "munchify":
