@@ -1,24 +1,29 @@
 // Require the necessary discord.js classes
-const { Client, Intents, Message, MessageContextMenuInteraction, Permissions, DiscordAPIError } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('discord.js');
 const { token } = require('./config.json');
+const fs = require('fs')
 const prefix = "$";
-var unitauth = ['239986007313743873', '254216945375772673', '480792708462673920', '616316541499342848', '291933059576627200', '660046048667893760', '182162812276047874'];
-var genauth = ['551491388999729202', '254216945375772673', '616316541499342848', '182162812276047874'];
+var unitauth = ['239986007313743873', '254216945375772673', '480792708462673920', '616316541499342848', '291933059576627200', '660046048667893760', '182162812276047874', '480088366663335938'];
+var adminauth = ['239986007313743873', '319658921126133762', '480792708462673920', '254216945375772673', '616316541499342848', '182162812276047874', '480088366663335938'];
 var mcauth = ['701517292990627881', '254216945375772673', '182162812276047874'];
+var ambyauth = "182162812276047874"
 const airole = "931138758718394408";
 const munchrole = "966124012394655815";
 var bannednums = [88];
 var remchannels = [];
+
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,  Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILDS] });
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
-	console.log('Ready!');
+	console.log('time to piss dick');
 });
 
-
+function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min +1) + min);
+}
 client.on("messageCreate", async (msg) => {
     
     if (remchannels.includes(msg.channel.id)) {
@@ -28,7 +33,6 @@ client.on("messageCreate", async (msg) => {
     if (msg.content === "!rank") {
         msg.reply("low rank xd");
     }
-
     const content = msg.content.slice(1).split(" ");
     const command = content[0].toLowerCase();
 
@@ -36,18 +40,138 @@ client.on("messageCreate", async (msg) => {
         console.log("Command: " + command + " - User: " + msg.author.username + " - FULL TEXT: " + msg.content);
 
         switch (command) {
+
+////////// Chat Commands //////////
+
             case "hey":
                 msg.reply("Hey " + msg.author.username);
+                break;
+           
+            case "say":
+                if (adminauth.includes(msg.author.id)) {
+                    if (content.length > 1) {
+                        msg.delete();
+                        msg.channel.send(content.slice(1).join(" "));
+                    }
+                }
                 break;
 
             case "playlist":
                 msg.reply("The Bean Zone Lore playlist, curated by AmbyNavy: https://www.youtube.com/playlist?list=PLfRqRuxX3UFXGyZpj8NHOHm7C1EokiI0A");
                 break;
+  
+            case "munch" :
+                msg.channel.send("https://cdn.discordapp.com/attachments/858545668439408640/967030446389096508/beanzone_graphite_munchers_render_forest.mp4")   
+            break;
+
+            case "ping":
+                msg.reply("Pong!");
+                break;
+
+            case "bam":
+                try {
+                    const member = msg.mentions.members.first();
+                    if (!member) {
+                        break;
+                    } else {
+                        msg.reply("bammed <@" + msg.mentions.members.first().id + ">");
+                    }
+                } 
+                catch (err) {
+                    msg.reply("There was some sort of error. God damnit.");
+                    break;
+                } 
+                break;      
+
+            case "wheel":
+                if (adminauth.includes(msg.author.id)) {  
+                    try{
+                        const embed = new MessageEmbed().setImage('https://media.giphy.com/media/EpqmhROkIwfza/giphy.gif').setTitle("Spinning the wheel for you, please hold...")
+                        msg.channel.send({ embeds: [embed] })
+                        await msg.guild.members.fetch(); // fetch all members and cache them
+                        const role = msg.guild.roles.cache.get(content.slice(1).join(" ")); // get role from cache by ID (roles are always cached)
+                        if (role == '789754987370512385' || role == '925686765589790740') {
+                            msg.channel.send("The winner is <@182162812276047874>! Congratulations!");
+                        } else {
+                            const list = role.members.map(m => m.id);
+                            const length = list.length;
+                            const winner = list[Math.floor(Math.random() * length)];
+                            msg.channel.send("The winner is <@" + winner + ">! Congratulations!");
+                        }
+                    }
+                    catch(err){
+                        msg.reply("There was an error. Please try again.");
+                        console.log(err);
+                    }
+                }break;
+
+            case "cockrate":
+                if(msg.author.id.includes('182162812276047874') || msg.author.id.includes('480792708462673920') || msg.author.id.includes('319658921126133762')) {
+                try{
+                    var values = [];
+                    var total = 0;
+                    var member = msg.mentions.members.first();
+                    while(values.length <= 5) { //get 6 values for rating
+                        var randomiser = Math.floor(Math.random() * 7) + 1;
+                        // Randomiser weighting block. Kinda retarded but yields varied enough results to keep as is. do not touch lol
+                        if (randomiser == 1) {
+                            values[values.length] = 1;
+                        }
+                        if (randomiser == 7) {
+                            values[values.length] = 10;
+                        }
+                        if (randomiser == 2 || randomiser == 3) {
+                            values[values.length] = randomIntFromInterval(2,6);
+                        }
+                        if (randomiser == 4 || randomiser == 5 || randomiser == 6) {
+                            values[values.length] = randomIntFromInterval(7,9);
+                        }
+                    }
+                    for(var i = 0; i < values.length; i++) {
+                        total += values[i];
+                    }
+                    total = Math.floor(total /6);
+                    console.log('Average Calculated')
+                    if(!member) { member = msg.author.id} // if no member use author 
+                    msg.channel.send("**COCK RATING:** <@" + member + ">\nGirth: " + values[0] + "/10\nShape: " + values[1] + "/10\nFlaccidness: " + values[2] + "/10\nCock To Ball Ratio: " + values[3] + "/10\nHair: " + values[4] + "/10\nLength:" + values[5] + "/10\n**FINAL RATING:** " + total + "/10!")
+                }
+                catch(err){
+                    msg.reply("There was an error. Please try again.");
+                    console.log(err);
+                }}
+                break;
+        
+            case "emojilist":
+                var emojis = msg.guild.emojis.cache.map(m => {
+                    if (m.animated) {
+                        return String("<a:" + m.name + ":" + m.id + ">");
+                    } else {
+                        return String("<:" + m.name + ":" + m.id + ">");
+                    }
+                    
+                });
+                var emojitext = "";
+                emojis.forEach(e => {
+                    if (String(emojitext + e).length < 2000) {
+                        emojitext += e;
+                    }
+                    else {
+                        msg.channel.send(emojitext);
+                        emojitext = e;
+                    }
+                });
+                msg.channel.send(emojitext);
+                break;
+
+            case "wiki" :
+                if (content.length > 1) {
+                    var search = content.slice(1).join(" ")
+                    search = search.replaceAll(" ", "_");
+                    msg.reply("https://en.wikipedia.org/wiki/" + search.toLowerCase());
+                }
+            break;
             
-            // case "sexme":
-            //     msg.reply("<@551491388999729202> has sexed " + msg.author.username); 
-            //     msg.member.roles.add(msg.guild.roles.cache.find(role => role.id == '898537395631292436'));
-            //     break;
+////////// Role Commands //////////
 
             case "unitify":
                 try {
@@ -91,11 +215,12 @@ client.on("messageCreate", async (msg) => {
                             
                         }
                     }
-                    break;
                 } catch (err) {
                     msg.reply("There was some sort of error. God damnit.");
                     break;
                 }
+                break;
+
 			case "deunitify":
 				if (unitauth.includes(msg.author.id)) {
 					
@@ -126,13 +251,15 @@ client.on("messageCreate", async (msg) => {
 					} else {
 						let muncherrole = msg.guild.roles.cache.find(role => role.id == munchrole);
 						member.roles.add(muncherrole);
-						msg.reply("<@" + msg.author.id + "> fucking loves eating graphite!");
+						msg.reply("<@" + msg.mentions.members.first().id + "> fucking loves eating graphite!");
 					}
-				break;
-				} catch (err) {
+				} 
+                catch (err) {
 					msg.reply("There was some sort of error. God damnit.");
 					break;
-				}		
+				}	
+                break;	
+
 			case "demunchify":
 				try {
 					const member = msg.mentions.members.first();
@@ -143,29 +270,76 @@ client.on("messageCreate", async (msg) => {
 						member.roles.remove(muncherrole);
 						msg.reply("<@" + msg.author.id + "> no longer chews graphite - weirdo.");
 					}
-				break;
 				} catch (err) {
 					msg.reply("There was some sort of error. God damnit.");
 					break;
 				}
-            case "say":
-                if (genauth.includes(msg.author.id)) {
-                    if (content.length > 1) {
-                        msg.delete();
-                        msg.channel.send(content.slice(1).join(" "));
+				break;
+                
+            case "members":
+                if (adminauth.includes(msg.author.id)) {
+                    try {
+                    msg.channel.send("Gathering members, please hold..")
+                    await msg.guild.members.fetch(); // fetch all members and cache them
+                    const role = msg.guild.roles.cache.get(content.slice(1).join(" ")); // get role from cache by ID (roles are always cached)
+                    const list = role.members.map(m => m.displayName);
+                     // map members by nickname
+                    
+                    var userString = list.join("\n");
+                    
+                    fs.writeFile("./rolemembers.txt", userString, (err) => {
+                        if (err) {
+                            console.log(err);
+                        }
+
+                        console.log('Members Saved');
+                    });
+                    msg.channel.send({files: [{attachment: "rolemembers.txt", name: "rolemembers.txt"}]});
+                    console.log("Members sent.");
+                }catch (err) {
+                    msg.reply("There was an error. Please try again.");
+                    console.log(err);
+                }
+            }break;
+
+            case "myroles":
+                var roleHeirarchy = [];
+                var roleList = [];
+                var rolePopularity = [];
+
+                await msg.member.fetch();
+                msg.member.roles.cache.forEach(role => {
+                    roleHeirarchy.push(role.position);
+                    roleList.push(role.name);
+                    rolePopularity.push(role.members.size);
+                });
+                var tmp = "";
+                
+
+                for (let inc = Math.max.apply(null, roleHeirarchy); inc > -1; inc--) {
+                    var index = roleHeirarchy.indexOf(inc);
+                    if (index != -1) {
+                        var repeatLength = 25-roleList[index].length;
+                        if (repeatLength < 1) {
+                            repeatLength = 1;
+                        }
+                        tmp += "`" + roleList[index] + " ".repeat(repeatLength) + rolePopularity[index] + " Members`\n";
                     }
                 }
+                //msg.reply("Role Heirarchy: \n" + roleHeirarchy.join("\n"));
+                //msg.reply("Role List: \n" + roleList.join("\n"));
+                msg.reply(tmp);
                 break;
             
             case "listadmins":
-                if (genauth.includes(msg.author.id)) {
+                if (adminauth.includes(msg.author.id)) {
                     var toSend = "";
                     if (content.length <= 1) {
                         content.push("e");
                     }
                     switch (content[1].toLowerCase()) {
                         case "general":
-                            genauth.forEach(uid => {
+                            adminauth.forEach(uid => {
                                 try {
                                     toSend += msg.guild.members.cache.find(mbr => mbr.id == uid).username + "\t - " + msg.guild.members.cache.find(mbr => mbr.id == uid).id + "\n";
                                 } catch (TypeError) {
@@ -196,21 +370,7 @@ client.on("messageCreate", async (msg) => {
                     msg.reply(toSend);
                 }
                 break;
-
-            case "unitlist":
-                if (unitauth.includes(msg.author.id)) {
-                    
-                    await msg.guild.members.fetch(); // fetch all members and cache them
-                    const role = msg.guild.roles.cache.get(airole); // get role from cache by ID (roles are always cached)
-                    const list = role.members.map(m => m.displayName); // map members by nickname
-                    
-                    var usrString = list.join("\n");
-                    msg.channel.send("```" + usrString + "```");
-
-    
-                }
-                break;
-            
+        
             case "muteall":
                 if (msg.author.id === "254216945375772673") {
                     //msg.channel.send("Fuck everyone!");
@@ -225,28 +385,8 @@ client.on("messageCreate", async (msg) => {
                 }
                 break;
 
-            case "emojilist":
-                var emojis = msg.guild.emojis.cache.map(m => {
-                    if (m.animated) {
-                        return String("<a:" + m.name + ":" + m.id + ">");
-                    } else {
-                        return String("<:" + m.name + ":" + m.id + ">");
-                    }
-                    
-                });
-                var emojitext = "";
-                emojis.forEach(e => {
-                    if (String(emojitext + e).length < 2000) {
-                        emojitext += e;
-                    }
-                    else {
-                        msg.channel.send(emojitext);
-                        emojitext = e;
-                    }
-                });
-                msg.channel.send(emojitext);
-                break;
-            
+////////// Mention Role Commands //////////
+                
             case "minecraftmention":
                 if (mcauth.includes(msg.author.id)) {
                     let mcrole = msg.guild.roles.cache.find(role => role.id == '961793799426822184');
@@ -267,48 +407,18 @@ client.on("messageCreate", async (msg) => {
                 }
                 break;
 
-            case "ping":
-                msg.reply("Pong!");
-                break;
+////////// the fuck button //////////
 
             case "shutdown":
-                if (genauth.includes(msg.author.id)) {
-                    msg.reply("alright <@" + msg.author.id + ">. bye bye");
+                if (ambyauth.includes(msg.author.id)) {
+                    msg.reply("dick pisser is kil");
                     throw "Bot Died. - " + msg.author.username;
                 }
                 break;
 
-            case "myroles":
-                var roleHeirarchy = [];
-                var roleList = [];
-                var rolePopularity = [];
-
-                await msg.member.fetch();
-                msg.member.roles.cache.forEach(role => {
-                    roleHeirarchy.push(role.position);
-                    roleList.push(role.name);
-                    rolePopularity.push(role.members.size);
-                });
-                var tmp = "";
-                
-
-                for (let inc = Math.max.apply(null, roleHeirarchy); inc > -1; inc--) {
-                    var index = roleHeirarchy.indexOf(inc);
-                    if (index != -1) {
-                        var repeatLength = 25-roleList[index].length;
-                        if (repeatLength < 1) {
-                            repeatLength = 1;
-                        }
-                        tmp += "`" + roleList[index] + " ".repeat(repeatLength) + rolePopularity[index] + " Members`\n";
-                    }
-                }
-                //msg.reply("Role Heirarchy: \n" + roleHeirarchy.join("\n"));
-                //msg.reply("Role List: \n" + roleList.join("\n"));
-                msg.reply(tmp);
-                break;
-
-            }
+            
         }
+    }
 });
 
 client.on("error", error => {
