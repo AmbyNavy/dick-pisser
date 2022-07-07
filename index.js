@@ -10,17 +10,20 @@ var munchauth = ["182162812276047874", "701517292990627881", "480792708462673920
 var ambyauth = "182162812276047874";
 var ambyaltauth = "962453954543902740";
 const airole = "982828262843617301";
+const phrogerole = "983152988933718036";
+var phrogeauth = ["701517292990627881", "182162812276047874"];
 const munchrole = "966124012394655815";
 var bannednums = [88];
 var remchannels = [];
 var annoy = false;
 var muteeveryone = false;
 var tobeannoyed = 0;
-var wumbusannoy = 716860776694153296;
+var wumbusannoy = "716860776694153296";
 var wumbusquiet = false;
-const jihadrole = "989562510023733319";
+var modteamauth = ["319658921126133762", "480792708462673920", "393564496922148865", "616316541499342848", "701517292990627881", "182162812276047874", "480792708462673920", "660614807300472845", "225772174336720896", "534245314606006273"]
+const jihadrole = "989562510023733319" ;
 var jihadauth = ['828555638837346354', '182162812276047874'];
-var bannedwords = ["cock", "vulva", "penile", "penes", "dick", "porn", "sex", "nigger", "faggot", "vagina", "penis", "nazi", "nigga", "furries", "furry", "yiff", "pubes", "pubic", "testicles", "nsfw", "boob", "breasts", "%46%6f%72%72%65%73 %41%63%61%64%65%6d%79", "semen"]; 
+var bannedwords = ["cock", "vulva", "masturbat", "erotic", "ahegao", "whore", "breast", "nude", "naked", "nipple", "tiddy", "foreskin", "tiddies", "penile", "hentai", "cunnilingus", "ejaculation", "penes", "labia", "nudity", "scrotum", "herpes", "genital", "fetish", "dick", "porn", "sex", "nigger", "faggot", "vagina", "penis", "nazi", "nigga", "furries", "furry", "yiff", "pubes", "pubic", "testicles", "nsfw", "boob", "breasts", "%46%6f%72%72%65%73 %41%63%61%64%65%6d%79", "semen"]; 
 const airole2 = '911164577071378493';
 const guesscooleddown = new Set();
 
@@ -136,19 +139,27 @@ client.on("messageCreate", async (msg) => {
                 break;      
 
             case "wheel":
-                if (adminauth.includes(msg.author.id)) {  
+                if (modteamauth.includes(msg.author.id)) {  
                     try{
                         const embed = new MessageEmbed().setImage('https://media.giphy.com/media/EpqmhROkIwfza/giphy.gif').setTitle("Spinning the wheel for you, please hold...")
                         msg.channel.send({ embeds: [embed] })
                         await msg.guild.members.fetch(); // fetch all members and cache them
                         const role = msg.guild.roles.cache.get(content.slice(1).join(" ")); // get role from cache by ID (roles are always cached)
-                        if (role == '789754987370512385' || role == '925686765589790740') {
-                            msg.channel.send("The winner is <@182162812276047874>! Congratulations!");
-                        } else {
-                            const list = role.members.map(m => m.id);
-                            const length = list.length;
-                            const winner = list[Math.floor(Math.random() * length)];
-                            msg.channel.send("The winner is <@" + winner + ">! Congratulations!");
+                        var rigged = false;
+                        if (rigged == true) {
+                            if (role == '789754987370512385' || role == '925686765589790740') {
+                                msg.channel.send("The winner is <@182162812276047874>! Congratulations!");
+                            } else {
+                                const list = role.members.map(m => m.id);
+                                const length = list.length;
+                                const winner = list[Math.floor(Math.random() * length)];
+                                msg.channel.send("The winner is <@" + winner + ">! Congratulations!");
+                            }
+                        }else{
+                        const list = role.members.map(m => m.id);
+                                const length = list.length;
+                                const winner = list[Math.floor(Math.random() * length)];
+                                msg.channel.send("The winner is <@" + winner + ">! Congratulations!");
                         }
                     }
                     catch(err){
@@ -229,7 +240,7 @@ client.on("messageCreate", async (msg) => {
             case "wiki" :
                 const talkedrecentlywiki = new Set();
                 try {
-                    if (msg.author.id != '476735278627946497') {
+                    if (modteamauth.includes(msg.author.id) && msg.author.id != '476735278627946497') {
                         if (talkedrecentlywiki.has(msg.author.id  && msg.author.id != ambyauth && msg.author.id != ambyaltauth)) {
                             msg.author.send("You can only use the `wiki` command every minute.").catch(e=>{console.log(`Saved bot from crash, error:\n${e}`)});
                             break;
@@ -255,6 +266,7 @@ client.on("messageCreate", async (msg) => {
                     }
                 } catch (err) {
                     console.log(err); 
+                    break;
                 }
             break;
 
@@ -421,6 +433,50 @@ client.on("messageCreate", async (msg) => {
                     }
                     break; 
 
+            case "phrogify":
+                try {
+                    if (phrogeauth.includes(msg.author.id)) {
+                        
+                        const member = msg.mentions.members.first();
+                        if (!member) {
+                            msg.reply("You need to @ the user. if they arent in this chat, @ them by typing `<@ID>`");
+                        } else {
+                            member.roles.add(phrogerole);
+
+                            member.setNickname(member.nickname + " 𓆏");
+
+                            msg.reply("<@" + msg.author.id + "> has helped " + content[1] + " become a phroge fren :>");
+                        }
+                    }
+                } catch (err) {
+                    msg.reply("There was some sort of error. God damnit.");
+                    console.log(err);
+                    break;
+                }
+            break;
+
+            case "unphrogify":
+                try {
+                    if (phrogeauth.includes(msg.author.id)) {
+                        
+                        const member = msg.mentions.members.first();
+                        if (!member) {
+                            msg.reply("You need to @ the user. if they arent in this chat, @ them by typing `<@ID>`");
+                        } else {
+                            member.roles.remove(phrogerole);
+
+                            member.setNickname(member.nickname.replace(" 𓆏", ""));
+
+                            msg.reply( content[1] + " has decided to leave the phroge frens. byebye :wave:!");
+                        }
+                    }
+                } catch (err) {
+                    msg.reply("There was some sort of error. God damnit.");
+                    console.log(err);
+                    break;
+                }
+            break;
+
             case "members":
                 if (adminauth.includes(msg.author.id)) {
                     try {
@@ -476,49 +532,48 @@ client.on("messageCreate", async (msg) => {
                 msg.reply(tmp);
                 break;
             
-            case "listadmins":
-                if (adminauth.includes(msg.author.id)) {
-                    var toSend = "";
-                    if (content.length <= 1) {
-                        content.push("e");
-                    }
-                    switch (content[1].toLowerCase()) {
-                        case "general":
-                            adminauth.forEach(uid => {
-                                try {
-                                    toSend += msg.guild.members.cache.find(mbr => mbr.id == uid).username + "\t - " + msg.guild.members.cache.find(mbr => mbr.id == uid).id + "\n";
-                                } catch (TypeError) {
-                                    toSend += "User Left or Deleted\n";
-                                }
-                            });
-                            break;
-                        case "minecraft":
-                            mcauth.forEach(uid => {
-                                try {
-                                    toSend += msg.guild.members.cache.find(mbr => mbr.id == uid).username + "\t - " + msg.guild.members.cache.find(mbr => mbr.id == uid).id + "\n";
-                                } catch (TypeError) {
-                                    toSend += "User Left or Deleted\n";
-                                }
-                            });                            break;
-                        case "legion":
-                            unitauth.forEach(uid => {
-                                try {
-                                    toSend += msg.guild.members.cache.find(mbr => mbr.id == uid).username + "\t - " + msg.guild.members.cache.find(mbr => mbr.id == uid).id + "\n";
-                                } catch (TypeError) {
-                                    toSend += "User Left or Deleted\n";
-                                }
-                            });                            break;
-                        default:
-                            toSend = "You need to specify a form to take.";
+            // case "listadmins":
+            //     if (adminauth.includes(msg.author.id)) {
+            //         var toSend = "";
+            //         if (content.length <= 1) {
+            //             content.push("e");
+            //         }
+            //         switch (content[1].toLowerCase()) {
+            //             case "general":
+            //                 adminauth.forEach(uid => {
+            //                     try {
+            //                         toSend += msg.guild.members.cache.find(mbr => mbr.id == uid).username + "\t - " + msg.guild.members.cache.find(mbr => mbr.id == uid).id + "\n";
+            //                     } catch (TypeError) {
+            //                         toSend += "User Left or Deleted\n";
+            //                     }
+            //                 });
+            //                 break;
+            //             case "minecraft":
+            //                 mcauth.forEach(uid => {
+            //                     try {
+            //                         toSend += msg.guild.members.cache.find(mbr => mbr.id == uid).username + "\t - " + msg.guild.members.cache.find(mbr => mbr.id == uid).id + "\n";
+            //                     } catch (TypeError) {
+            //                         toSend += "User Left or Deleted\n";
+            //                     }
+            //                 });                            break;
+            //             case "legion":
+            //                 unitauth.forEach(uid => {
+            //                     try {
+            //                         toSend += msg.guild.members.cache.find(mbr => mbr.id == uid).username + "\t - " + msg.guild.members.cache.find(mbr => mbr.id == uid).id + "\n";
+            //                     } catch (TypeError) {
+            //                         toSend += "User Left or Deleted\n";
+            //                     }
+            //                 });                            break;
+            //             default:
+            //                 toSend = "You need to specify a form to take.";
 
-                    }
-                    msg.reply(toSend);
-                }
-                break;
+            //         }
+            //         msg.reply(toSend);
+            //     }
+            //     break;
       
 ////////// The Funny //////////
-                
-                
+                     
             case "muteall":
                 if (msg.author.id === ambyauth) {
                     msg.channel.send("Fuck everyone!");
@@ -539,6 +594,7 @@ client.on("messageCreate", async (msg) => {
                 
             case "minecraftmention":
                 if (mcauth.includes(msg.author.id)) {
+                    msg.delete();
                     let mcrole = msg.guild.roles.cache.find(role => role.id == '961793799426822184');
                     await mcrole.edit({mentionable: true});
                     await msg.channel.send("<@&961793799426822184> " + content.slice(1).join(" "));
@@ -549,9 +605,31 @@ client.on("messageCreate", async (msg) => {
 
             case "legionmention":
                 if (msg.author.id === "254216945375772673" || msg.author.id === "182162812276047874") {
+                    msg.delete();
                     let lgrole = msg.guild.roles.cache.find(role => role.id == airole);
                     await lgrole.edit({mentionable: true});
                     await msg.channel.send("<@&" + airole + "> " + content.slice(1).join(" "));
+                    await lgrole.edit({mentionable: false});
+                    
+                }
+                break;
+
+            case "jihadmention":
+                if (msg.author.id === "828555638837346354" || msg.author.id === "182162812276047874") {
+                    let lgrole = msg.guild.roles.cache.find(role => role.id == "989562510023733319");
+                    await lgrole.edit({mentionable: true});
+                    await msg.channel.send("<@&" + "989562510023733319" + "> " + content.slice(1).join(" "));
+                    await lgrole.edit({mentionable: false});
+                    
+                }
+                break;
+
+            case "rootping":
+                if (msg.author.id === "393564496922148865" || msg.author.id === "182162812276047874" || msg.author.id === "476459750561939458") {
+                    msg.delete();
+                    let lgrole = msg.guild.roles.cache.find(role => role.id == "857136936526151711");
+                    await lgrole.edit({mentionable: true});
+                    await msg.channel.send("<@&" + "857136936526151711" + "> " + content.slice(1).join(" "));
                     await lgrole.edit({mentionable: false});
                     
                 }
@@ -593,7 +671,23 @@ client.on("messageCreate", async (msg) => {
                     console.log(err); 
                 }
             break;
-            
+  
+////////// mass renamer //////////
+            case "bulkrename":
+                try {
+                    if (modteamauth.includes(msg.author.id)){
+                        if(content.length > 1){
+                            msg.channel.send(content.slice(2).join(" "))
+                        }
+                        // await msg.guild.members.fetch(); // fetch all members and cache them
+                        
+
+                    }
+                }catch(err){
+                    console.log(err);
+                    break;
+                }
+            break;
 ////////// the fuck button //////////
 
             case "shutdown":
