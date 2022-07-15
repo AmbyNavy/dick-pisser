@@ -1,5 +1,5 @@
 // Require the necessary discord.js classes
-const { Client, Intents, MessageEmbed, Guild } = require('discord.js');
+const { Client, Intents, MessageEmbed, Guild, CommandInteractionOptionResolver } = require('discord.js');
 const { token } = require('./config.json');
 const fs = require('fs')
 const prefix = "$";
@@ -26,6 +26,7 @@ var jihadauth = ['828555638837346354', '182162812276047874'];
 var bannedwords = ["cock", "vulva", "masturbat", "erotic", "ahegao", "whore", "breast", "nude", "naked", "nipple", "tiddy", "foreskin", "tiddies", "penile", "hentai", "cunnilingus", "ejaculation", "penes", "labia", "nudity", "scrotum", "herpes", "genital", "fetish", "dick", "porn", "sex", "nigger", "faggot", "vagina", "penis", "nazi", "nigga", "furries", "furry", "yiff", "pubes", "pubic", "testicles", "nsfw", "boob", "breasts", "%46%6f%72%72%65%73 %41%63%61%64%65%6d%79", "semen"]; 
 const airole2 = '911164577071378493';
 const guesscooleddown = new Set();
+var wumbusboys = ["212591081999695872", "120811982608662530", "439016537257672707", "121089524276133892", "709949386234396763", "716860776694153296", "772336999540981760", ];
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS,  Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILDS] });
@@ -58,6 +59,9 @@ client.on("messageCreate", async (msg) => {
     }
     if (msg.content === "!rank") {
         msg.reply("low rank xd").catch(e=>{console.log(`Saved bot from crash, error:\n${e}`)});
+    }
+    if (msg.content.includes("?lockdown") && !msg.content.includes("?lockdown end")) {
+        setTimeout(() => {msg.reply("https://cdn.discordapp.com/attachments/790138778181435402/995026345899864084/StandBy-1.mp4")}, 10000);
     }
     const content = msg.content.slice(1).split(" ");
     const command = content[0].toLowerCase();
@@ -575,7 +579,7 @@ client.on("messageCreate", async (msg) => {
 ////////// The Funny //////////
                      
             case "muteall":
-                if (msg.author.id === ambyauth) {
+                if (msg.author.id === ambyauth || msg.author.id === "765871804136423434") {
                     msg.channel.send("Fuck everyone!");
                     muteeveryone = true;
                     remchannels.push(msg.channel.id);
@@ -583,7 +587,7 @@ client.on("messageCreate", async (msg) => {
                 break;
 
             case "unmuteall":
-                if (msg.author.id === ambyauth) {
+                if (msg.author.id === ambyauth || msg.author.id === "765871804136423434") {
                     muteeveryone = false;
                     msg.channel.send("Done.");
                     remchannels = remchannels.filter(e => e != msg.channel.id);
@@ -624,13 +628,24 @@ client.on("messageCreate", async (msg) => {
                 }
                 break;
 
-            case "rootping":
-                if (msg.author.id === "393564496922148865" || msg.author.id === "182162812276047874" || msg.author.id === "476459750561939458") {
+            case "mention":
+                if (msg.author.id === "393564496922148865" || msg.author.id === "182162812276047874" || msg.author.id === "476459750561939458" || msg.author.id === "480792708462673920" || msg.author.id === "319658921126133762") {
+                    try {
+                    let mentionrole = msg.guild.roles.cache.find(role => role.id == content[1]);
                     msg.delete();
-                    let lgrole = msg.guild.roles.cache.find(role => role.id == "857136936526151711");
-                    await lgrole.edit({mentionable: true});
-                    await msg.channel.send("<@&" + "857136936526151711" + "> " + content.slice(1).join(" "));
-                    await lgrole.edit({mentionable: false});
+                    await mentionrole.edit({mentionable: true});
+                    let removearr = content.slice(0, 2);
+                    const removalset = new Set(removearr);
+                    const msgcontent = content.filter((name) => {
+                        // return those elements not in the content
+                        return !removalset.has(name);
+                      });
+                    await msg.channel.send("<@&" + mentionrole + "> " + msgcontent.join(" "));
+                    await mentionrole.edit({mentionable: false});
+                    }catch(err){
+                        console.log(err); 
+                        msg.channel.send("You did something that almost crashed the bot you dribbling idiot. Get Amby to check the console. (if it was you amby then lol(lmao))");
+                    }
                     
                 }
                 break;
